@@ -20,7 +20,7 @@ const createPattern = (matcher) => {
     return matcher;
   }
   if (typeof matcher === 'string') {
-    const glob = picomatch(matcher);
+    const glob = picomatch(matcher, { dot: true });
     return (string) => matcher === string || glob(string);
   }
   if (matcher instanceof RegExp) {
@@ -71,7 +71,7 @@ const anymatch = (matchers, testString, returnIndex = false) => {
   const negatedGlobs = mtchers
     .filter(item => typeof item === 'string' && item.charAt(0) === BANG)
     .map(item => item.slice(1))
-    .map(item => picomatch(item));
+    .map(item => picomatch(item, { dot: true }));
   const patterns = mtchers.map(createPattern);
 
   if (testString == null) {
